@@ -1,6 +1,7 @@
 {
   "name": "genshiken-demo",
   "version": "0.1.0",
+  "homepage": "https://gilmargmq.github.io/genshiken-demo",
   "private": true,
   "scripts": {
     "dev": "next dev",
