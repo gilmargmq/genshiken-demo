@@ -1,11 +1,11 @@
 import { useQuery } from 'react-query';
 import { getAnimeById, getAnimeGenres } from '@/api/animesApi';
 import GenresList from '@/components/animes/GenresList';
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { GetStaticProps, InferGetStaticPropsType } from 'next';
 import AnimeInfo from '@/components/animes/info/AnimeInfo';
 import AnimeBanner from '@/components/animes/info/AnimeBanner';
 
-const AnimesByGenre = ({ animeId }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const AnimesByGenre = ({ animeId }: InferGetStaticPropsType<typeof getStaticProps>) => {
 
     const queryAnimeById = useQuery({ queryKey: ["anime", animeId], queryFn: () => getAnimeById({ animeId }) })
     const queryAnimeGenres = useQuery({ queryKey: ["anime_genres"], queryFn: getAnimeGenres });
@@ -29,10 +29,17 @@ const AnimesByGenre = ({ animeId }: InferGetServerSidePropsType<typeof getServer
 
 export default AnimesByGenre
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export function getStaticPaths() {
+    return {
+        paths: [],
+        fallback: true
+    }
+}
+
+export const getStaticProps: GetStaticProps = (context) => {
     return {
         props: {
             animeId: context.params?.anime_id
         }
-    }
+    };
 }

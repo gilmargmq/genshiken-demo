@@ -4,14 +4,14 @@ import AnimeList from '@/components/animes/AnimeList';
 import { useEffect, useState } from 'react';
 import Pagination from '@/components/Pagination';
 import GenresList from '@/components/animes/GenresList';
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { GetStaticProps, InferGetStaticPropsType } from 'next';
 
-const AnimesByGenre = ({ genreId }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const AnimesByGenre = ({ genreId }: InferGetStaticPropsType<typeof getStaticProps>) => {
     const [currentPage, setCurrentPage] = useState(1)
 
     const queryAllAnimes = useQuery({ queryKey: ["all_animes", genreId, currentPage], queryFn: () => getAllAnimes({ limit: 24, genre: genreId, page: currentPage }) });
     const queryAnimeGenres = useQuery({ queryKey: ["anime_genres"], queryFn: getAnimeGenres });
-    
+
     useEffect(() => {
         setCurrentPage(1)
     }, [genreId])
@@ -30,10 +30,17 @@ const AnimesByGenre = ({ genreId }: InferGetServerSidePropsType<typeof getServer
 
 export default AnimesByGenre
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export function getStaticPaths() {
+    return {
+        paths: [],
+        fallback: true
+    }
+}
+
+export const getStaticProps: GetStaticProps = (context) => {
     return {
         props: {
             genreId: context.params?.genre
         }
-    }
+    };
 }
