@@ -4,11 +4,15 @@ import AnimeList from '@/components/animes/AnimeList';
 import { useState } from 'react';
 import Pagination from '@/components/Pagination';
 import GenresList from '@/components/animes/GenresList';
+import { useSearchParams } from 'next/navigation'
 
 export default function Animes() {
     const [currentPage, setCurrentPage] = useState(1)
 
-    const queryAllAnimes = useQuery({ queryKey: ["all_animes", currentPage], queryFn: () => getAllAnimes({ limit: 24, genre: "", page: currentPage }) });
+    const searchParams = useSearchParams()
+    const search = searchParams.get('search')
+
+    const queryAllAnimes = useQuery({ queryKey: ["all_animes", currentPage, search], queryFn: () => getAllAnimes({ search: search ? search : "", limit: 24, genre: "", page: currentPage }) });
     const queryAnimeGenres = useQuery({ queryKey: ["anime_genres"], queryFn: getAnimeGenres });
 
     return (

@@ -10,7 +10,7 @@ interface Props {
 
 const Pagination: FC<Props> = ({ currentPage, setCurrentPage, pagination }) => {
     return (
-        <div className="items-center justify-center flex space-x-5 text-md font-semibold text-genshiken-red-600">
+        <div className="items-center justify-center flex space-x-5 text-md font-semibold text-genshiken-red-600 p-4">
             {currentPage > 1 &&
                 <div className="flex space-x-5">
                     <button className=""

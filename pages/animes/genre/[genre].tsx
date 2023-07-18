@@ -4,17 +4,18 @@ import AnimeList from '@/components/animes/AnimeList';
 import { useEffect, useState } from 'react';
 import Pagination from '@/components/Pagination';
 import GenresList from '@/components/animes/GenresList';
-import { GetStaticProps, InferGetStaticPropsType } from 'next';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 
-const AnimesByGenre = ({ genreId }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const AnimesByGenre = ({ genreId }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const [currentPage, setCurrentPage] = useState(1)
 
-    const queryAllAnimes = useQuery({ queryKey: ["all_animes", genreId, currentPage], queryFn: () => getAllAnimes({ limit: 24, genre: genreId, page: currentPage }) });
+    const queryAllAnimes = useQuery({ queryKey: ["all_animes", genreId, currentPage], queryFn: () => getAllAnimes({ search: "", limit: 24, genre: genreId, page: currentPage }) });
     const queryAnimeGenres = useQuery({ queryKey: ["anime_genres"], queryFn: getAnimeGenres });
 
     useEffect(() => {
         setCurrentPage(1)
     }, [genreId])
+
     return (
         <div className='flex'>
             <div className='w-3/4'>
@@ -30,17 +31,10 @@ const AnimesByGenre = ({ genreId }: InferGetStaticPropsType<typeof getStaticProp
 
 export default AnimesByGenre
 
-export function getStaticPaths() {
-    return {
-        paths: [],
-        fallback: true
-    }
-}
-
-export const getStaticProps: GetStaticProps = (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
         props: {
             genreId: context.params?.genre
         }
-    };
+    }
 }

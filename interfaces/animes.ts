@@ -7,6 +7,10 @@ export interface AnimeById {
     data: AnimeData
 }
 
+export interface AnimeRecommendationsById {
+    data: AnimeRecommendationEntry[]
+}
+
 export interface Genres {
     data: Genre[]
 }
@@ -82,4 +86,15 @@ export interface Pagination {
         total: number;
         per_page: number
     }
+}
+
+export interface AnimeRecommendationEntry {
+    entry: {
+        mal_id: number;
+        url: string;
+        images: Image;
+        title: string;
+    };
+    url: string;
+    votes: number
 }

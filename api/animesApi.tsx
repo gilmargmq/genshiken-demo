@@ -1,4 +1,4 @@
-import { AnimeById, Animes, Genres } from "@/interfaces/animes";
+import { AnimeById, AnimeRecommendationsById, Animes, Genres } from "@/interfaces/animes";
 import axios from "axios"
 
 export const getTopAnimes = async (
@@ -20,11 +20,12 @@ export const getLatestAnimes = async (): Promise<Animes> => {
 
 export const getAllAnimes = async (values: {
     limit: number,
+    search: string,
     genre: string,
     page: number
 }): Promise<Animes> => {
     const res = await axios.get<Animes>(
-        `https://api.jikan.moe/v4/anime?order_by=popularity&limit=${values.limit}&genres=${values.genre}&page=${values.page}`
+        `https://api.jikan.moe/v4/anime?q=${values.search}&order_by=popularity&limit=${values.limit}&genres=${values.genre}&page=${values.page}`
     );
     return res.data
 }
@@ -41,6 +42,15 @@ export const getAnimeById = async (values: {
 export const getAnimeGenres = async (): Promise<Genres> => {
     const res = await axios.get<Genres>(
         `https://api.jikan.moe/v4/genres/anime`
+    )
+    return res.data
+}
+
+export const getAnimeRecommendations = async (values: {
+    animeId: number
+}): Promise<AnimeRecommendationsById> => {
+    const res = await axios.get<AnimeRecommendationsById>(
+        `https://api.jikan.moe/v4/anime/${values.animeId}/recommendations?limit=6`
     )
     return res.data
 }

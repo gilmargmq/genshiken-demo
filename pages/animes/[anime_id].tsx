@@ -1,14 +1,16 @@
 import { useQuery } from 'react-query';
-import { getAnimeById, getAnimeGenres } from '@/api/animesApi';
+import { getAnimeById, getAnimeGenres, getAnimeRecommendations } from '@/api/animesApi';
 import GenresList from '@/components/animes/GenresList';
-import { GetStaticProps, InferGetStaticPropsType } from 'next';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import AnimeInfo from '@/components/animes/info/AnimeInfo';
 import AnimeBanner from '@/components/animes/info/AnimeBanner';
+import AnimeRecommendations from '@/components/animes/info/AnimeRecommendations';
 
-const AnimesByGenre = ({ animeId }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const AnimesByGenre = ({ animeId }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 
     const queryAnimeById = useQuery({ queryKey: ["anime", animeId], queryFn: () => getAnimeById({ animeId }) })
     const queryAnimeGenres = useQuery({ queryKey: ["anime_genres"], queryFn: getAnimeGenres });
+    const queryAnimeRecommendations = useQuery({ queryKey: ["anime_recommendations", animeId], queryFn: () => getAnimeRecommendations({ animeId }) })
 
     return (
         <div className='flex flex-col'>
@@ -23,23 +25,19 @@ const AnimesByGenre = ({ animeId }: InferGetStaticPropsType<typeof getStaticProp
                     {!queryAnimeGenres.isLoading && <GenresList data={queryAnimeGenres.data!.data} />}
                 </div>
             </div>
+            <div>
+                {!queryAnimeRecommendations.isLoading && !queryAnimeById.isLoading && <AnimeRecommendations data={queryAnimeRecommendations.data!.data} genre={queryAnimeById.data!.data.genres[0].mal_id} />}
+            </div>
         </div>
     )
 }
 
 export default AnimesByGenre
 
-export function getStaticPaths() {
-    return {
-        paths: [],
-        fallback: true
-    }
-}
-
-export const getStaticProps: GetStaticProps = (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
         props: {
             animeId: context.params?.anime_id
         }
-    };
+    }
 }

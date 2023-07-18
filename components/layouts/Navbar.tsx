@@ -1,5 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/router"
+import { useState } from "react"
 
 const instagramLogo = (
     <svg
@@ -53,6 +55,8 @@ const facebookLogo = (
 )
 
 const Navbar = () => {
+    const [searchBar, setSearchBar] = useState("")
+    const router = useRouter()
     return (
         <nav className="bg-genshiken-red-500 h-24">
             <div className="w-3/4 h-full flex items-center justify-between p-2 mx-auto">
@@ -65,7 +69,13 @@ const Navbar = () => {
                             objectFit="contain" />
                     </Link>
                 </div>
-                <input type="text" className="outline-0 bg-white rounded-sm p-3 h-fit w-1/2 text-gray-800" placeholder="Animes, noticias, etc" />
+                <input type="text" className="outline-0 bg-white rounded-sm p-3 h-fit w-1/2 text-gray-800" placeholder="Animes, noticias, etc"
+                    onChange={(e) => setSearchBar(e.target.value)}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                            router.push(`/animes?search=${searchBar}`)
+                        }
+                    }} />
                 <div className="flex space-x-6 text-white">
                     <div className="opacity-60 hover:opacity-100 cursor-pointer">
                         {instagramLogo}
