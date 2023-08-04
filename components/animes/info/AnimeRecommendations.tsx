@@ -84,7 +84,7 @@ const AnimeRecommendations: FC<Props> = ({ data, genre }) => {
                                     <Image src={item.entry.images.jpg.image_url} alt={item.entry.title} layout="fill" objectFit="cover" />
                                     <div className="w-full h-full bg-gradient-to-t from-black relative cursor-pointer"></div>
                                     <div className="absolute p-6 flex flex-col inset-x-0 bottom-0">
-                                        <span className='text-white text-3xl font-bold p-2'>
+                                        <span className='text-white text-3xl font-bold p-2 break-words'>
                                             {item.entry.title}
                                         </span>
                                     </div>
@@ -94,7 +94,7 @@ const AnimeRecommendations: FC<Props> = ({ data, genre }) => {
                     }
                 </motion.div>
                 <div className="flex flex-wrap items-center justify-center gap-2">
-                    {data.slice(0, itemsPerSlide > 1 ? 1 - itemsPerSlide : undefined).map((_, index) => (
+                    {data.slice(0,10).slice(0, itemsPerSlide > 1 ? 1 - itemsPerSlide : undefined).map((_, index) => (
                         <div key={index}
                             className={`transition-all w-3 h-3 bg-gray-300 rounded-full cursor-pointer ${curr === index ? "p-2" : "bg-opacity-50"}`}
                             onClick={() => {
