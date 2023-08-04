@@ -11,6 +11,7 @@ interface Props {
 }
 
 const AnimeRecommendations: FC<Props> = ({ data, genre }) => {
+    const fixedNumberOfRecommendations = 10;
     const [curr, setCurr] = useState(0);
     const size = useWindowSize();
     const itemsPerSlide = size.width! >= 1024 ? 4 : size.width! >= 640 ? 3 : size.width! >= 440 ? 2 : 1;
@@ -71,14 +72,15 @@ const AnimeRecommendations: FC<Props> = ({ data, genre }) => {
                         if (imagesSlider.current && dragSlider.current) {
                             const translateValues = imagesSlider.current.style.transform.match(/translateX\((-?[0-9]+(.[0-9]+)?(px|em|%|ex|ch|rem|vh|vw|vmin|vmax|mm|cm|in|pt|pc))\)/)
                             translateValues ?
-                                transform.set(`translateX(${parseFloat(translateValues[1]) + offset.x <= 0 ? parseFloat(translateValues[1]) + offset.x < -((dragSlider.current?.offsetWidth / itemsPerSlide) * (data.length - itemsPerSlide)) ? -((dragSlider.current?.offsetWidth / itemsPerSlide) * (data.length - itemsPerSlide)) : parseFloat((translateValues[1])) + offset.x : 0}px) translateY(0px) translateZ(0px)`)
+                                transform.set(`translateX(${parseFloat(translateValues[1]) + offset.x <= 0 ? parseFloat(translateValues[1]) + offset.x < -((dragSlider.current?.offsetWidth / itemsPerSlide) * (fixedNumberOfRecommendations - itemsPerSlide)) ? -((dragSlider.current?.offsetWidth / itemsPerSlide) * (fixedNumberOfRecommendations - itemsPerSlide)) : parseFloat((translateValues[1])) + offset.x : 0}px) translateY(0px) translateZ(0px)`)
                                 : transform.set("")
                             handleCurr()
                         }
                     }}
-                    style={{ width: `${data.length * (100 / itemsPerSlide)}%`, transform }}>
+                    onTransitionEnd={() => handleCurr()}
+                    style={{ width: `${fixedNumberOfRecommendations * (100 / itemsPerSlide)}%`, transform }}>
                     {
-                        data.map((item) => (
+                        data.slice(0,fixedNumberOfRecommendations).map((item) => (
                             <div key={item.entry.mal_id} className="h-[50vh] w-full relative overflow-hidden m-1 rounded-md cursor-pointer group">
                                 <Link href={`/animes/${item.entry.mal_id}`} draggable={false}>
                                     <Image src={item.entry.images.jpg.image_url} alt={item.entry.title} layout="fill" objectFit="cover" />
@@ -94,7 +96,7 @@ const AnimeRecommendations: FC<Props> = ({ data, genre }) => {
                     }
                 </motion.div>
                 <div className="flex flex-wrap items-center justify-center gap-2">
-                    {data.slice(0,10).slice(0, itemsPerSlide > 1 ? 1 - itemsPerSlide : undefined).map((_, index) => (
+                    {data.slice(0, fixedNumberOfRecommendations).slice(0, itemsPerSlide > 1 ? 1 - itemsPerSlide : undefined).map((_, index) => (
                         <div key={index}
                             className={`transition-all w-3 h-3 bg-gray-300 rounded-full cursor-pointer ${curr === index ? "p-2" : "bg-opacity-50"}`}
                             onClick={() => {
