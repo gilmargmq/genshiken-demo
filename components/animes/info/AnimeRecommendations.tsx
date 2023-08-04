@@ -11,7 +11,7 @@ interface Props {
 }
 
 const AnimeRecommendations: FC<Props> = ({ data, genre }) => {
-    const fixedNumberOfRecommendations = 10;
+    const fixedNumberOfRecommendations = data.length > 10 ? 10 : data.length;
     const [curr, setCurr] = useState(0);
     const size = useWindowSize();
     const itemsPerSlide = size.width! >= 1024 ? 4 : size.width! >= 640 ? 3 : size.width! >= 440 ? 2 : 1;
@@ -80,7 +80,7 @@ const AnimeRecommendations: FC<Props> = ({ data, genre }) => {
                     onTransitionEnd={() => handleCurr()}
                     style={{ width: `${fixedNumberOfRecommendations * (100 / itemsPerSlide)}%`, transform }}>
                     {
-                        data.slice(0,fixedNumberOfRecommendations).map((item) => (
+                        data.slice(0, fixedNumberOfRecommendations).map((item) => (
                             <div key={item.entry.mal_id} className="h-[50vh] w-full relative overflow-hidden m-1 rounded-md cursor-pointer group">
                                 <Link href={`/animes/${item.entry.mal_id}`} draggable={false}>
                                     <Image src={item.entry.images.jpg.image_url} alt={item.entry.title} layout="fill" objectFit="cover" />
