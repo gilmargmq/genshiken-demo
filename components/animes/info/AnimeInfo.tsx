@@ -7,7 +7,7 @@ interface Props {
 
 const AnimeInfo: FC<Props> = ({ data }) => {
     return (
-        <div className="text-justify p-10 text-lg font">
+        <div className="text-justify p-6 text-lg font">
            {data.synopsis} 
         </div>
     )

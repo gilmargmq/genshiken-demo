@@ -8,8 +8,8 @@ interface Props {
 
 const GenresList: FC<Props> = ({ data }) => {
     return (
-        <div className="p-6">
-            <div className="text-md text-gray-400 font-medium flex items-center space-x-4">
+        <div>
+            <div className="text-md text-gray-400 font-medium flex items-center space-x-4 py-4">
                 <span>
                     GÉNEROS
                 </span>
@@ -18,7 +18,7 @@ const GenresList: FC<Props> = ({ data }) => {
             <div className="grid grid-cols-2 gap-3 p-2">
                 {data.map((genre) => (
                     <Link key={genre.mal_id} href={`/animes/genre/${genre.mal_id}`}>
-                        <button className="w-full h-full border border-gray-500 rounded-md text-center p-2 hover:border-genshiken-red-500 hover:text-genshiken-red-500">
+                        <button className="w-full h-full border border-gray-500 rounded-md text-center p-2 hover:border-genshiken-red-500 hover:text-genshiken-red-500 break-words">
                             {genre.name}
                         </button>
                     </Link>

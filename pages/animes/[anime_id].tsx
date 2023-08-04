@@ -17,15 +17,15 @@ const AnimesByGenre = ({ animeId }: InferGetServerSidePropsType<typeof getServer
             <div>
                 {!queryAnimeById.isLoading && <AnimeBanner data={queryAnimeById.data!.data} />}
             </div>
-            <div className='flex'>
-                <div className='w-3/4'>
+            <div className='flex flex-col lg:flex-row'>
+                <div className='lg:w-3/4'>
                     {!queryAnimeById.isLoading && <AnimeInfo data={queryAnimeById.data!.data} />}
                 </div>
-                <div className='w-1/4'>
+                <div className='lg:w-1/4 px-6 lg:px-1.5'>
                     {!queryAnimeGenres.isLoading && <GenresList data={queryAnimeGenres.data!.data} />}
                 </div>
             </div>
-            <div>
+            <div className='px-6 lg:px-4'>
                 {!queryAnimeRecommendations.isLoading && !queryAnimeById.isLoading && <AnimeRecommendations data={queryAnimeRecommendations.data!.data} genre={queryAnimeById.data!.data.genres[0].mal_id} />}
             </div>
         </div>

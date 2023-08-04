@@ -17,12 +17,12 @@ const AnimesByGenre = ({ genreId }: InferGetServerSidePropsType<typeof getServer
     }, [genreId])
 
     return (
-        <div className='flex'>
-            <div className='w-3/4'>
+        <div className='flex flex-col lg:flex-row'>
+            <div className='w-full lg:w-3/4 px-4'>
                 {!queryAllAnimes.isLoading && <AnimeList data={queryAllAnimes.data!.data} />}
                 {!queryAllAnimes.isLoading && <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} pagination={queryAllAnimes.data!.pagination} />}
             </div>
-            <div className='w-1/4'>
+            <div className='w-full lg:w-1/4 px-4'>
                 {!queryAnimeGenres.isLoading && <GenresList data={queryAnimeGenres.data!.data} />}
             </div>
         </div>

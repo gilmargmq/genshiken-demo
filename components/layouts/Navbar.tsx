@@ -1,3 +1,4 @@
+import useWindowSize from "@/hooks/useWindow"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -54,22 +55,77 @@ const facebookLogo = (
     </svg>
 )
 
+const glassIcon = (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        xmlSpace="preserve"
+        width={20}
+        height={20}
+        viewBox="0 0 512 512"
+    >
+        <path
+            d="M376.324 312.508c49.638-78.774 40.238-184.326-28.306-252.871-79.507-79.515-208.872-79.515-288.388 0-79.507 79.516-79.507 208.873 0 288.379 68.536 68.544 174.115 77.935 252.88 28.306l135.668 135.676L512 448.186 376.324 312.508zm-79.781-15.966c-51.121 51.139-134.308 51.139-185.439 0-51.121-51.121-51.112-134.299.009-185.43 51.122-51.121 134.309-51.13 185.43-.008 51.122 51.139 51.122 134.317 0 185.438z"
+            style={{
+                fill: "currentColor",
+            }}
+        />
+    </svg>
+)
+
+const leftArrowIcon = (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        fill="currentColor"
+        version="1.1"
+        viewBox="0 0 8 8"
+        xmlSpace="preserve"
+    >
+        <path
+            d="M-0.226 4.614H5.057V6.08H-0.226z"
+            transform="rotate(45.001 2.415 5.347)"
+        ></path>
+        <path d="M1.607 3.161H7.982V4.844H1.607z"></path>
+        <path
+            d="M-0.233 1.921H5.051V3.386H-0.233z"
+            transform="rotate(-45.017 2.41 2.654)"
+        ></path>
+    </svg>
+)
 const Navbar = () => {
+    const size = useWindowSize();
     const [searchBar, setSearchBar] = useState("")
+    const [isSearchBarOpen, setIsSearchBarOpen] = useState(false)
+
     const router = useRouter()
     return (
         <nav className="bg-genshiken-red-500 h-24">
-            <div className="w-3/4 h-full flex items-center justify-between p-2 mx-auto">
-                <div className="h-full w-1/4 relative">
-                    <Link href='/'>
-                        <Image src="/logo.png"
-                            className=""
-                            alt="logo"
-                            layout="fill"
-                            objectFit="contain" />
-                    </Link>
+            <div className="w-3/4 h-full flex items-center justify-between p-2 mx-auto relative">
+                <div className="h-full w-1/4 flex items-center justify-center">
+                    <div className="h-full w-24 relative">
+                        <Link href='/'>
+                            <Image src="/logo.png"
+                                alt="logo"
+                                layout="fill"
+                                objectFit="contain" />
+                        </Link>
+                    </div>
                 </div>
-                <input type="text" className="outline-0 bg-white rounded-sm p-3 h-fit w-1/2 text-gray-800" placeholder="Animes, noticias, etc"
+                {isSearchBarOpen &&
+                    <div className="inset-0 md:hidden absolute bg-genshiken-red-500 flex items-center gap-3">
+                        <button className='text-genshiken-yellow-500' onClick={() => setIsSearchBarOpen(false)} >
+                            {leftArrowIcon}
+                        </button>
+                        <input type="text" className="outline-0 bg-white w-full rounded-sm p-3 h-fit text-gray-800" placeholder="Animes, noticias, etc"
+                            onChange={(e) => setSearchBar(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    router.push(`/animes?search=${searchBar}`)
+                                }
+                            }} />
+                    </div>}
+                <input type="text" className="outline-0 bg-white rounded-sm p-3 h-fit hidden md:block w-1/2 text-gray-800" placeholder="Animes, noticias, etc"
                     onChange={(e) => setSearchBar(e.target.value)}
                     onKeyDown={(e) => {
                         if (e.key === 'Enter') {
@@ -77,15 +133,18 @@ const Navbar = () => {
                         }
                     }} />
                 <div className="flex space-x-6 text-white">
-                    <div className="opacity-60 hover:opacity-100 cursor-pointer">
+                    <button className="md:hidden" onClick={() => setIsSearchBarOpen(true)}>
+                        {glassIcon}
+                    </button>
+                    <button className="opacity-60 hover:opacity-100 cursor-pointer">
                         {instagramLogo}
-                    </div>
-                    <div className="opacity-60 hover:opacity-100 cursor-pointer">
+                    </button>
+                    <button className="opacity-60 hover:opacity-100 cursor-pointer">
                         {twitterLogo}
-                    </div>
-                    <div className="opacity-60 hover:opacity-100 cursor-pointer">
+                    </button>
+                    <button className="opacity-60 hover:opacity-100 cursor-pointer">
                         {facebookLogo}
-                    </div>
+                    </button>
                 </div>
             </div>
         </nav>

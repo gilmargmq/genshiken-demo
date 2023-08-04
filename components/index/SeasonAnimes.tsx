@@ -10,15 +10,15 @@ interface Props {
 const SeasonAnimes: FC<Props> = ({ data }) => {
 
     return (
-        <div className="flex flex-col space-y-3 py-10">
-            <span className="text-6xl font-bold">
+        <div className="flex flex-col space-y-3 py-10 px-3">
+            <span className="text-5xl font-bold">
                 Temporada
             </span>
-            <div className="text-md text-gray-300 font-medium flex items-center space-x-4">
+            <div className="text-md text-gray-300 font-medium flex flex-col sm:flex-row sm:items-center sm:space-x-4">
                 <span className="whitespace-nowrap">
                     LOS ÚLTIMOS ANIMES DE TEMPORADA
                 </span>
-                <div className="bg-gray-300 w-full h-0.5"></div>
+                <div className="bg-gray-300 w-full h-0.5 hidden sm:block"></div>
                 <Link href='/animes'>
                     <div className="flex items-center space-x-1 group cursor-pointer hover:bg-genshiken-yellow-600 rounded-md p-1">
                         <div className="p-1 flex items-center justify-center h-fit w-fit rounded-md bg-genshiken-red-600 text-white group-hover:bg-transparent">
@@ -41,7 +41,7 @@ const SeasonAnimes: FC<Props> = ({ data }) => {
                     </div>
                 </Link>
             </div>
-            <div className="grid grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {
                     data.map((item) => (
                         <div key={item.mal_id} className="h-[30vh] w-full relative overflow-hidden rounded-md cursor-pointer group">
